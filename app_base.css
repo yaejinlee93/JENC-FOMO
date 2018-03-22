@@ -1,0 +1,34 @@
+#category_list{
+  list-style-type: none;
+  padding-left: 0px;
+  font-family: 'Karma', serif;
+}
+
+.activeone{
+  font-weight: bold;
+  font-size: 20px;
+  padding: 3px 6px;
+}
+
+a{
+  color: black;
+}
+
+.five_history {
+  list-style-type: none;
+  font-family: 'Karma', serif;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.five_history ol li{
+  list-style: none;
+  /* width: 100%; */
+  display: block;
+  border: 1px solid #CCCCCC
+}
+
+.five_history img{
+  width: 75px;
+  height: auto;
+}

@@ -1,0 +1,24 @@
+<%inherit file = "/homepage/templates/app_base.htm"/>
+<%! from catalog import models as cmod%>
+
+<%block name="content_left">
+      <ul id = "category_list">
+        <li><a class = '${'activeone' if cat_name == 'All Products' else ''}' href = '/catalog/index/0/'>All Products</a></li>
+        %for c in cmod.Category.objects.order_by("name"):
+          <li><a class = '${'activeone' if cat_name == c.name else ''}' href = '/catalog/index/${c.id}/'>${c.name}</a></li>
+        %endfor
+      </ul>
+</%block>
+
+<%block name ="content_right">
+  <ol class = "five_history">
+    %for thumb in request.last_five[1:6]:
+      <li>
+        <a href = "/catalog/detail/${thumb.id}/">
+          <img src = "${thumb.image_url()}"/>
+          <h4>${thumb.name}</h4>
+        </a>
+      </li>
+    %endfor
+  </ol>
+</%block>
