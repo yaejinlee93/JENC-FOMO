@@ -1,0 +1,70 @@
+## APP BASE CONTAINS THE NAV BAR
+
+<%inherit file="/homepage/templates/base.htm" />
+import
+
+<%! from catalog import models as cmod %>
+
+##set the active tab dynamically with code
+<%block name="menu">
+<ul class="nav navbar-nav navbar-left">
+  <li class="${'active' if request.dmp.page == 'about' else ''}"><a href="homepage/about">About</a></li>
+    <li class="${'active' if request.dmp.page == 'contact' else ''}"><a href="homepage/contact">Contact</a></li>
+    <li class="${'active' if request.dmp.page == 'terms' else ''}"><a href="homepage/terms">Terms</a></li>
+    <li class="${'active' if request.dmp.page == 'faq' else ''}"><a href="homepage/faq">FAQ</a></li>
+  <li class="${'active' if request.dmp.page == 'sections' else ''}"><a href="homepage/sections">Sections</a></li>
+</ul>
+
+<ul class="nav navbar-nav navbar-right">
+  %if request.user.is_authenticated:
+  <div class="dropdown navbar-right">
+    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      ${request.user.first_name}
+        &#9660;
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li><a class="dropdown-item" href="/account/index/">My Account</a></li>
+        <li><a class="dropdown-item" href="/account/logout/">Logout</a></li>
+    </div>
+  </div>
+
+  %else:
+  <li class="${'active' if request.dmp.page == 'signup' else ''}"><a href="/account/signup">Sign Up</a></li>
+  <li class="${'active' if request.dmp.page == 'login' else ''}"><a href="/account/login">Login</a></li>
+  %endif
+</ul>
+  </%block>
+
+<%block name="left">
+    <ul id="category_list">
+        <li><a class="category_li ${ 'active' if category is None else ''}" href = "/catalog/index/0/"> All Products</a></li>
+        %for c in cmod.Category.objects.order_by('name'):
+          <li><a class="category_li ${ 'active' if cateogry == c else '' }" href="/catalog/index/${ c.id }/">${c.name}</a></li>
+        %endfor
+    </ul>
+</%block>
+
+<%block name="right">
+  <!-- for loop through request.lastFive - print the thumbnails -->
+
+  <p class="title"> Recently Viewed </p>
+  <%
+    if request.dmp.page == 'detail':
+      printlist = request.last_five[1:6]
+    else:
+      printlist = request.last_five[0:5]
+  %>
+
+  <div class="smallpics">
+    <ol>
+      %for prod in printlist:
+      <a href = "/catalog/detail/${prod.id}">
+        <li>
+          <img src = '${ prod.image_url() }' />
+          <p>${prod.name}</p>
+        </li>
+      </a>
+      %endfor
+    </ol>
+  </div>
+</%block>

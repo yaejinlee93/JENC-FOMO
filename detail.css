@@ -1,0 +1,27 @@
+.smallpics {
+  width: 80px;
+  float: left;
+  display: flex;
+}
+
+.mainpic {
+  width: 430px;
+  float:left;
+}
+
+.mainpic img {
+  display: inline-block;
+  border: 1px solid #147871;
+  border-radius: 7px;
+  width: 350px;
+  margin: 0px 20px 0px 60px;
+  position: relative;
+}
+
+.smallpics img {
+  width: 80px;
+  height: 80px;
+  border: 1px solid #147871;
+  border-radius: 7px;
+  margin: 0px 5px 10px 5px;
+}
