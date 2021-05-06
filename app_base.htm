@@ -1,0 +1,79 @@
+<%inherit file="homepage/templates/base.htm" />
+<%! from catalog import models as cmod %>
+
+##set the active tab dynamically with code
+<%block name="menu">
+  <li class="${'active' if request.dmp.page == 'index' else ''}"><a href="/homepage/index/">Home</a></li>
+  <li class="${'active' if request.dmp.page == 'about' else ''}"><a href="/homepage/about/">About</a></li>
+  <li class="${'active' if request.dmp.page == 'contact' else ''}"><a href="/homepage/contact/">Contact</a></li>
+  <li class="${'active' if request.dmp.page == 'terms' else ''}"><a href="/homepage/terms/">Terms</a></li>
+  <li class="${'active' if request.dmp.page == 'faq' else ''}"><a href="/homepage/faq/">FAQ</a></li>
+  <li class="${'active' if request.dmp.page == 'product' else ''}"><a href="/catalog/product/">Products</a></li>
+</%block>
+
+<%block name="login">
+  % if request.user.is_authenticated:
+  <li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+      <span class="glyphicon glyphicon-log-in>"></span>
+      ${ request.user }
+      <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <li><a href="/account/logout/?next=/index/">Logout</a></li>
+      <li><a href="/admin/">View Account</a></li>
+    </ul>
+  </li>
+  % else:
+  <li>
+    <a href="/account/signup/">Sign Up</a>
+  </li>
+  <li><a href="/account/login/">Login</a></li>
+  % endif
+</%block>
+
+<%block name="content_left">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<div class="sidebar">
+    <h2 class="myheader">Category</h2>
+    <ul>
+    ##default option
+      <li>
+        <a class="${'active' if category_id == 0 else ''}" href="/catalog/index/0/">
+        All Products
+        </a>
+      </li>
+      <hr />
+    ##dynamically show the categories
+      %for c in cmod.Category.objects.all():
+      <li>
+        <a class="${'active' if c.id == category_id else ''}" href="/catalog/index/${c.id}/">
+        ${ c.name }
+        </a>
+      </li>
+      %endfor
+    </ul>
+</div>
+</%block>
+
+<%block name="content_right">
+<div id="rightbar">
+  <h2>Recently Viewed</h2>
+  <div id="recently_viewed">
+    <ol>
+      ##if the page is detail = then display 1-6 otherwise 0-5
+      %if request.dmp.page == 'detail':
+        %for item in request.last_five[0:5]:
+        <li><a href="/catalog/detail/${ item.id }/"><img class="last_five" src="${ item.image_url() }" /></a></li>
+        <li>${ item.name }</li>
+        %endfor
+      %else:
+        %for item in request.last_five[0:5]:
+        <li><a href="/catalog/detail/${ item.id }/"><img class="last_five" src="${ item.image_url() }" /></a></li>
+        <li>${ item.name }</li>
+        %endfor
+      %endif
+    </ol>
+  </div>
+</div>
+</%block>

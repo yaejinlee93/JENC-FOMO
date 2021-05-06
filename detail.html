@@ -1,0 +1,35 @@
+<%inherit file="app_base.htm" />
+
+<%block name="content_middle">
+  <h1 class="myheader">${ product_name }</h1>
+
+  <div id="mycontainer">
+
+    <div id="image_sidebar">
+      <ul>
+        %for image in product.image_urls():
+        <li class="">
+          <img class="mythumbnail" alt="an alternate image for ${ product_name }" src="${ image }" />
+        </li>
+        %endfor
+      </ul>
+    </div>
+
+    <div id="image_viewer">
+      <img id="main_image" alt="main picture for ${ product_name }" src="${ product.image_url() }" />
+    </div>
+
+    ##Show the quantity option if the product is a bulk product
+    <div id="purchase">
+    ## isinstance(BulkProduct)
+      %if hasattr(product, 'quantity'):
+        <input class="form-control myquantity" type="number" name="quantity" value="1" />
+      %endif
+      <a href="#" class="btn btn-lg btn-primary">Buy Now</a>
+    </div>
+    <div id="product_description">
+      ${ product.description }
+    </div>
+  </div>
+
+</%block>
